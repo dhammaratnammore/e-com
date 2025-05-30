@@ -58,6 +58,7 @@
 
            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
     @foreach ($category as $cat)
+    <a href="{{ route('productbycat',['id'=>$cat->id]) }}">
     <div class="col-md-3" style="flex: 1 1 22%; max-width: 22%; min-width: 250px; margin-bottom: 20px;">
         <div style="
             background: #fff;
@@ -77,6 +78,7 @@
             </div>
         </div>
     </div>
+    </a>
     @endforeach
 </div>
 

@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\category_controller;
 use App\Http\Controllers\contact_controller;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\product_controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [category_controller::class,'index']);
+Route::get('/index', [category_controller::class,'index']);
  
 //home page route
 Route::get('/hom', function () {
@@ -31,7 +34,6 @@ Route::get('/dashboard', function () {
     return view('admin.layout.dashboard');
 });
 
-
 //Category All Route
 Route::get('/categoryform',function(){
     return view('admin.pages.categoryform');
@@ -44,8 +46,6 @@ Route::get('/category/edit/{id}', [category_controller::class, 'edit'])->name('c
 Route::post('/category/update/{id}', [category_controller::class, 'update'])->name('category.update');
 Route::get('/category/view/{id}', [category_controller::class, 'categoryshow'])->name('category.view');
 
-
-
 //product all Routes
 
 Route::get('/productform',[product_controller::class,'selectcat']);
@@ -56,17 +56,22 @@ Route::get('/product/edit/{id}', [product_controller::class, 'edit'])->name('pro
 Route::post('/product/update/{id}', [product_controller::class, 'update'])->name('product.update');
 Route::get('/product/view/{id}', [product_controller::class, 'show'])->name('product.view');
 
-
-
 Route::get('/addtocart/{id}', [product_controller::class, 'addtocart'])->name('addtocart');
 Route::get('/showcart', [product_controller::class, 'showdataoncart'])->name('showcart');
+Route::get('/productbycat/{id}', [product_controller::class, 'productbycat'])->name('productbycat');
 
 
 
 
+Auth::routes(
+    [
+        'login'=> false,
+    ]
+);
 
 
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/', [LoginController::class, 'login']);
+Route::get('/home', [HomeController::class,'index'])->name('home');
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

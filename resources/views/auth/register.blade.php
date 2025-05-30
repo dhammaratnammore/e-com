@@ -1,77 +1,173 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
 
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+    .register-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+    .register-card {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+        width: 100%;
+        max-width: 480px;
+        text-align: center;
+    }
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+    .register-card h2 {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+        font-size: 1.8rem;
+    }
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+    .register-card p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+    }
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+    .form-group {
+        text-align: left;
+        margin-bottom: 20px;
+    }
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+    label {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 6px;
+        display: block;
+    }
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 12px;
+        background: #f0f0f0;
+        box-shadow: inset 6px 6px 12px #d1d1d1, inset -6px -6px 12px #ffffff;
+        font-size: 14px;
+        color: #333;
+        transition: box-shadow 0.3s;
+    }
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+    input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #80bdff;
+    }
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        background: #28a745;
+        color: white;
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        transition: background 0.3s ease;
+    }
 
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+    .btn-submit:hover {
+        background: #218838;
+    }
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
+    .login-link {
+        font-size: 13px;
+        color: #666;
+        margin-top: 15px;
+    }
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    .login-link a {
+        color: #28a745;
+        text-decoration: none;
+    }
+
+    .invalid-feedback {
+        font-size: 13px;
+        color: #d9534f;
+        margin-top: 6px;
+        display: block;
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-card">
+        <h2>{{ __('Register') }}</h2>
+        <p>{{ __('Create a new account to get started') }}</p>
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div class="form-group">
+                <label for="name">{{ __('Full Name') }}</label>
+                <input id="name" type="text"
+                       class="@error('name') is-invalid @enderror"
+                       name="name" value="{{ old('name') }}" required autofocus>
+                @error('name')
+                    <span class="invalid-feedback">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
-        </div>
+
+            <div class="form-group">
+                <label for="email">{{ __('Email Address') }}</label>
+                <input id="email" type="email"
+                       class="@error('email') is-invalid @enderror"
+                       name="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <span class="invalid-feedback">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="password">{{ __('Password') }}</label>
+                <input id="password" type="password"
+                       class="@error('password') is-invalid @enderror"
+                       name="password" required>
+                @error('password')
+                    <span class="invalid-feedback">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="password-confirm">{{ __('Confirm Password') }}</label>
+                <input id="password-confirm" type="password"
+                       name="password_confirmation" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                {{ __('Register') }}
+            </button>
+
+            <div class="login-link">
+                {{ __('Already have an account?') }}
+                <a href="{{ route('login') }}">{{ __('Login') }}</a>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

@@ -28,7 +28,8 @@
                         <table class="table table-dark table-hover align-middle text-center">
                             <thead class="bg-black text-warning">
                                 <tr>
-                                    <th>Product</th>
+                                    <th>Name</th>
+                                    <th>Image</th>
                                     <th>Price</th>
                                     <th>Qty</th>
                                     <th>Total</th>
@@ -38,11 +39,12 @@
                             <tbody>
                                 @foreach ($cart as $c)
                                 <tr data-id="{{ $c->id }}">
+                                    <td><span>{{ $c->name }}</span></td>
                                     <td class="d-flex align-items-center justify-content-center">
                                         <img src="{{ url('uplode/'.$c->image) }}" alt="" width="50" class="rounded me-2 border">
-                                        <span>{{ $c->name }}</span>
+                                        
                                     </td>
-                                    <td class="unit-price" data-price="{{ $c->price }}">${{ $c->price }}</td>
+                                    <td class="unit-price" data-price="{{ $c->price }}">${{ number_format($c->price, 2) }}</td>
                                     <td>
                                         <div class="input-group input-group-sm justify-content-center" style="width: 100px;">
                                             <button class="btn btn-outline-light btn-minus"><i class="fa fa-minus"></i></button>
@@ -50,7 +52,7 @@
                                             <button class="btn btn-outline-light btn-plus"><i class="fa fa-plus"></i></button>
                                         </div>
                                     </td>
-                                    <td class="item-total">${{ $c->price }}</td>
+                                    <td class="item-total">$0.00</td>
                                     <td>
                                         <button class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button>
                                     </td>
@@ -114,16 +116,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateCart() {
         let subtotal = 0;
+        const cartData = [];
+
         document.querySelectorAll("tr[data-id]").forEach(row => {
+            const id = row.dataset.id;
             const price = parseFloat(row.querySelector(".unit-price").dataset.price);
             const quantityInput = row.querySelector(".quantity-input");
             let qty = parseInt(quantityInput.value) || 1;
+
             if (qty < 1) qty = 1;
             quantityInput.value = qty;
 
             const total = qty * price;
             row.querySelector(".item-total").textContent = `$${total.toFixed(2)}`;
             subtotal += total;
+
+            cartData.push({ id, qty, price });
         });
 
         const total = subtotal + shippingCost;
@@ -131,16 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".cart-subtotal").textContent = `$${subtotal.toFixed(2)}`;
         document.querySelector(".cart-total").textContent = `$${total.toFixed(2)}`;
 
-        // Also update hidden inputs for checkout
-        const inputSubtotal = document.getElementById("cart_subtotal");
-        const inputTotal = document.getElementById("cart_total");
-        if (inputSubtotal && inputTotal) {
-            inputSubtotal.value = subtotal.toFixed(2);
-            inputTotal.value = total.toFixed(2);
-        }
+        document.getElementById("cart_subtotal").value = subtotal.toFixed(2);
+        document.getElementById("cart_total").value = total.toFixed(2);
+        document.getElementById("cart_data").value = JSON.stringify(cartData);
     }
 
-    // Add event listeners to plus and minus buttons
     document.querySelectorAll("tr[data-id]").forEach(row => {
         const plusBtn = row.querySelector(".btn-plus");
         const minusBtn = row.querySelector(".btn-minus");
@@ -159,18 +162,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Manual input typing
         quantityInput.addEventListener("input", () => {
             updateCart();
         });
     });
 
-    // Initial calculation
     updateCart();
 });
 </script>
-
 @endpush
 
 @endsection
-

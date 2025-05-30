@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\cart_model;
 use App\Models\category_model;
 use App\Models\product_model;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class product_controller extends Controller
 {
@@ -111,5 +113,17 @@ public function showdataoncart(){
     $data = compact('cart');
     return view('pages.cart')->with($data);
 }
+
+public function productbycat($id)
+{
+    $product = DB::table('products')
+        ->join('category', 'products.category_id', '=', 'category.id')
+        ->where('category.id', '=', $id)
+        ->select('products.*') // Select only columns from products table
+        ->get();
+
+    return view('pages.service',compact('product'));
+}
+
 
 }

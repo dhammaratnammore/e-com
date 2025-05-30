@@ -73,6 +73,7 @@ public function categoryshow($id)
 
 public function index(){
     $category = category_model::all();
+   
     $data = compact('category');
     return view('pages.home')->with($data);
 }

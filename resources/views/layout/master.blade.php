@@ -45,7 +45,7 @@
                   <div class="collapse navbar-collapse" id="navbarNav">
                      <ul class="navbar-nav">
                         <li class="nav-item active">
-                           <a class="nav-link" href="">Home</a>
+                           <a class="nav-link" href="index">Home</a>
                         </li>
                         <li class="nav-item">
                            <a class="nav-link" href="about">About</a>
@@ -59,6 +59,26 @@
                         <li class="nav-item">
                            <a class="nav-link " href="contact">Contact</a>
                         </li>
+                        <!-- User Info Section -->
+        <div class="col-lg-4 col-6 mx-auto" style="background: #ffffff; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <div class="d-flex align-items-center justify-content-between">
+
+                <!-- User Details -->
+                <div style="display: flex; flex-direction: column;">
+                    <p style="margin: 0; font-weight: 600; font-size: 16px; color: #2c3e50;">👤 {{ Auth::user()->name }}</p>
+                    <span style="font-size: 13px; color: #7f8c8d;">📧 {{ Auth::user()->email }}</span>
+                </div>
+
+                <!-- Logout Button -->
+                <form action="{{ route('logout') }}" method="POST" class="ml-3">
+                    @csrf
+                    <button type="submit" style="background-color: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; transition: background-color 0.3s;">
+                        Log Out
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- User Info Section End-->
                         <li class="nav-item">
                            <a class="nav-link " href="#"><img src="images/search-icon.png"></a>
                         </li>
@@ -70,12 +90,32 @@
                <div class="logo"><a href="index.html"><img src="images/logo.png"></a></div>
                <div class="menu_main">
                   <ul>
-                     <li class="active"><a href="">Home</a></li>
+                     <li class="active"><a href="index">Home</a></li>
                      <li><a href="about">About</a></li>
                      <li><a href="sevice">Watchs</a></li>                  
                      <li><a href="contact">Contact us</a></li>
                      <li><a href="{{ route('showcart') }}">Cart</a></li>
                      <li><a href="#"><img src="images/search-icon.png"></a></li>
+                     <!-- User Info Section -->
+        <div class="col-lg-4 col-6 mx-auto" style="background: #ffffff; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <div class="d-flex align-items-center justify-content-between">
+
+                <!-- User Details -->
+                <div style="display: flex; flex-direction: column;">
+                    <p style="margin: 0; font-weight: 600; font-size: 16px; color: #2c3e50;">👤 {{ Auth::user()->name }}</p>
+                    <span style="font-size: 13px; color: #7f8c8d;">📧 {{ Auth::user()->email }}</span>
+                </div>
+
+                <!-- Logout Button -->
+                <form action="{{ route('logout') }}" method="POST" class="ml-3">
+                    @csrf
+                    <button type="submit" style="background-color: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; transition: background-color 0.3s;">
+                        Log Out
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- User Info Section End-->
                   </ul>
                </div>
             </div>
